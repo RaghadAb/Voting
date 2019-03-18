@@ -12,7 +12,7 @@ class Poll(models.Model):#define fields and behaviors
     text = models.CharField(max_length=255, null='DEFAULT VALUE')
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)#at this point, this is for registered users
     votes = models.IntegerField(default=0)
     #text is used as a keyword, which is useful for categorising
 

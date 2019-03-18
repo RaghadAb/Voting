@@ -29,7 +29,7 @@ def createpoll(request):
 	if request.method == "POST":
 		form = PollForm(request.POST)
 		if form.is_valid():
-			poll = form.save(commit=False)
+			poll = form.save(commit=False) #this gives a model object which you can edit and then save. hence the poll.save()
 			poll.author = request.user
 			poll.save()
 			messages.add_message(request, messages.INFO, 'Poll created!')
