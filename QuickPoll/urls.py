@@ -27,6 +27,6 @@ urlpatterns = [
 	url(r'^quickPoll/', include('polls.urls', namespace='quickPoll')),
     # url(r'^account/', include('polls.urls', namespace='accounts')),
     url(r'^accounts/', include('allauth.urls')),
-    url(r'^comments/', include('django_comments_xtd.urls')),
-    path(r'jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+    #url(r'^comments/', include('django_comments_xtd.urls')),
+    path(r'jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'), #this is used for translation, used to view the results
 ]

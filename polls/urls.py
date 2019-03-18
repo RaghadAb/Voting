@@ -17,7 +17,7 @@ urlpatterns = [
 	# url(r'^vote', views.vote, name='vote'),
 	# url(r'^results', views.results, name='results'),
 	url(r'^all_urls', views.all_urls, name='all_urls'),
-	url(r'^option/(?P<quiPoll_id>\d+)/', views.option_Number,name='option'),
-    url(r'^polls/(?P<quiPoll_id>\d+)/vote/', views.vote, name='vote'),
+	url(r'^option/(?P<quickPoll_id>\d+)/', views.option_Number,name='option'),
+    url(r'^polls/(?P<quickPoll_id>\d+)/vote/', views.vote, name='vote'),
 	url(r'^test', views.TestView.as_view(), name='createpoll'),
 ]

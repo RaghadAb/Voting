@@ -2,7 +2,7 @@ from django.shortcuts import render, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView
-from .models import Poll, Options, Vote
+from .models import Poll, Options, Vote,Category, Comments
 from .forms import PollForm, OptionFormSet
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -33,9 +33,9 @@ def createpoll(request):
 			poll.author = request.user
 			poll.save()
 			messages.add_message(request, messages.INFO, 'Poll created!')
-			return HttpResponseRedirect(reverse("polls:showpoll", kwargs={ "poll_id": poll.id }))
+			return HttpResponseRedirect(reverse("polls:showpoll", kwargs={ "poll_id": poll.id }))   #arguments, redirect to a specific url, reverse is used incase non match is for the url is found
 	form = PollForm()
-	return render(request,'createpoll.html', { 'form': form })
+	return render(request,'createpoll.html', { 'form': form })#combines the template with the dictionary
 
 def show_poll(request, poll_id):
 	poll = get_object_or_404(Poll, id=poll_id)
@@ -52,12 +52,12 @@ def search(request):
 	context={'polls':polls}
 	return render(request,'search.html',context)
 
-def vote(request, quiPoll_id):
-	poll = get_object_or_404(Poll, id=quiPoll_id)
+def vote(request, quickPoll_id):
+	poll = get_object_or_404(Poll, id=quickPoll_id)
 	try:
 		print(request.POST["option"])
 		selected_option = poll.options_set.get(pk=request.POST["option"])
-		with transaction.atomic():
+		with transaction.atomic(): #if there is an error, it redirects it automatically
 			selected_option.votes += 1
 			poll.votes += 1
 			vote = Vote()
@@ -67,7 +67,7 @@ def vote(request, quiPoll_id):
 			vote.poll = poll
 			vote.save(); selected_option.save(); poll.save();
 
-	except (KeyError, Options.DoesNotExist) as e:
+	except (KeyError, Options.DoesNotExist) as e:#when you try to access a key which doesnt exist
 		print(e)
 		pass
 	return render(request,'vote.html')
@@ -80,19 +80,17 @@ def poll_results(request, poll_id):
 def all_urls(request):
 	return render(request,'all_urls.html')
 
-def option_Number(request, quiPoll_id):
-    option=Poll.objects.get(id=quiPoll_id)
+def option_Number(request, quickPoll_id):
+    option=Poll.objects.get(id=quickPoll_id)
+    comments = Comments.objects.filter(poll=quickPoll_id)
 
     if request.method=="POST":
         print("It's submitted!")
         print(request.POST)
 
-    if request.method=="GET":
-        print("Got it")
-        print(request.GET)
-
-    context={'option':option}
+    context={'option':option, 'comments':comments}
     return render(request,'option_Number.html',context)
+
 
 
 class OptionInline(InlineFormSetFactory): #create multiple model instances from a single form, option in this case
@@ -101,7 +99,7 @@ class OptionInline(InlineFormSetFactory): #create multiple model instances from 
 
 
 class PollFormClass(BaseInlineFormSet): #nested formset
-	def clean(self):
+	def clean(self): #this is done to perform validation checks
 		print(self)
 		return
 
@@ -130,7 +128,7 @@ class TestView(CreateWithInlinesView):
 		return kwargs
 
 	def get_success_url(self):
-		return reverse('polls:showpoll', kwargs={'poll_id': self.object.id})
+		return reverse('polls:showpoll', kwargs={'poll_id': self.object.id}) #check to see if any kwargs have been passed to it
 
 # class TestView(CreateView):
 # 	model = Poll

@@ -17,6 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR=os.path.join(BASE_DIR,'../templates')
 STATIC_DIR=os.path.join(BASE_DIR,'../static')
 STATIC_ROOT=os.path.join(BASE_DIR,'../vendor_static')
+MEDIA_DIR=os.path.join(BASE_DIR,'media')
 
 
 # Quick-start development settings - unsuitable for production
@@ -54,8 +55,6 @@ INSTALLED_APPS = [
     'extra_views',
     'rest_framework',
     'djangoformsetjs',
-    'django_comments_xtd',
-    'django_comments',
     'polls',
 ]
 
@@ -160,3 +159,10 @@ COMMENTS_XTD_CONTACT_EMAIL = "helpdesk@example.com"
 LOGIN_REDIRECT_URL = "/"
 
 # CRISPY_TEMPLATE_PACK = 'uni_form'
+MEDIA_ROOT = MEDIA_DIR
+MEDIA_URL='/media/'
+
+PASSWORD_HASHERS=(
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+)
