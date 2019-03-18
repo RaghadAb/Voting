@@ -1,0 +1,20 @@
+{% load staticfiles %}
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="{% static "js/script.js"%}"></script>
+	<div id="header"></div>
+</head>
+<body>
+	<div class= "container">
+
+	<h1> These are the polls we found...</h1>
+	<ol>
+	{% for poll in polls %}
+		 <li><a href="{% url 'quickPoll:option' poll.id %}">{{ poll  }}</a></li>
+
+
+	{% endfor %}
+	</ol>
+	</div>
+</body>

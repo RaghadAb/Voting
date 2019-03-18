@@ -1,0 +1,17 @@
+{% load staticfiles %}
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
+</head>
+<body>
+	<form  class="login">
+	  <fieldset>
+		<legend style="font-weight:900px;">Sign up</legend> 
+		<input name="name" type="text" placeholder="Username" /> <br /> 
+		<input name="name" type="password" placeholder="Password" />
+		<br /> <input name="name" type="text" placeholder="Email" /> <br />
+		<label class="ArchMed" for="dob" style="float:left;">Date of birth:</label><br /> 
+		<input type="date" id="dob" name="date-of-birth"/><br /> 
+		<button type="submit" value="Submit">Register</button>
+	  </fieldset>
+	</form>
+</body>

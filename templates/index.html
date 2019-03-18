@@ -1,0 +1,26 @@
+{% load staticfiles %}
+{% load account %}
+
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="{% static "js/script.js"%}"></script>
+	<div id="header"></div>
+</head>
+<body>
+
+	{% user_display user %}
+
+	{% if user.is_authenticated %}
+		<li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+	{% else %}
+		<li><a href="{% url 'account_login' %}">Sign In</a></li>
+		<li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+	{% endif %}
+
+	<span style="font-size:80px;">QuickPoll</span><br/>
+	Real time polls and quizzes<br/>
+	<form>
+		<button type="submit" value="Submit">START NOW!</button>
+	</form>
+</body>
