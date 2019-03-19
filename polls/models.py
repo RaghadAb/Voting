@@ -52,7 +52,7 @@ class Options(models.Model):
     votes = models.IntegerField(default=0) #0 votes on the choice to start off with
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    option_color = models.CharField(max_length=32, default=generate_random_color)
+    option_color = models.CharField(max_length=32, default='#0084cgg')
 
     class Meta:
         verbose_name_plural='options'

@@ -20,7 +20,8 @@
 
 	<span style="font-size:80px;">QuickPoll</span><br/>
 	Real time polls and quizzes<br/>
-	<form>
+	<form action="{% url 'polls:createpoll' %}" method="get" style="display:inline;">
 		<button type="submit" value="Submit">START NOW!</button>
+
 	</form>
 </body>
