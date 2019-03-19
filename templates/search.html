@@ -7,14 +7,34 @@
 </head>
 <body>
 	<div class= "container">
+		{% if empty_query %}
+	<h1>No search query was entered, therefore no polls are visible</h1>
+{% else %}
+
+	<h3>Filters</h3>
+
+	<form url="{% url 'polls:search' %}" method="get">
+		<input name="q" value="{{ request.GET.q }}" type="hidden" />
+		<select name="filter">
+			<option value="recent"
+				{% if request.GET.filter == 'selected' %}{{ 'selected' }}{% endif %}
+			>Most Recent</option>
+			<option value="popular"
+				{% if request.GET.filter == 'popular' %}{{ 'selected' }}{% endif %}
+			>Most Popular</option>
+		</select>
+		<button type="submit">Filter</button>
+	</form>
 
 	<h1> These are the polls we found...</h1>
 	<ol>
 	{% for poll in polls %}
-		 <li><a href="{% url 'quickPoll:option' poll.id %}">{{ poll  }}</a></li>
+		  <li><a href="{% url 'polls:showpoll' poll_id=poll.id %}">{{ poll.form }} ({{ poll.votes }})</a></li></a></li>
 
 
 	{% endfor %}
 	</ol>
 	</div>
+
+	{% endif %}
 </body>

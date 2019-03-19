@@ -141,22 +141,7 @@ STATICFILES_DIRS=[STATIC_DIR, ]
 
 SITE_ID = 1
 
-COMMENTS_APP = 'django_comments_xtd'
-
-COMMENTS_XTD_MAX_THREAD_LEVEL = 1
-#confirm mail is set to false, so that comments can be saved to the databse without confirmation
-COMMENTS_XTD_CONFIRM_MAIL = False
-#  To help obfuscating comments before they are sent for confirmation.
-COMMENTS_XTD_SALT = (b"02012aa115f75c129e8752e6d55702f5431effb846710256c49481451"
-                     b"542caae5038fa99174ff502b7058bd3110a005464a768a19a1604b1ca9966b0d20e081f")
-
-# Source mail address used for notifications.
-COMMENTS_XTD_FROM_EMAIL = "noreply@example.com"
-
-# Contact mail address to show in messages.
-COMMENTS_XTD_CONTACT_EMAIL = "helpdesk@example.com"
-
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/polls"
 
 # CRISPY_TEMPLATE_PACK = 'uni_form'
 MEDIA_ROOT = MEDIA_DIR

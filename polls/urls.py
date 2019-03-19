@@ -20,4 +20,5 @@ urlpatterns = [
 	url(r'^option/(?P<quickPoll_id>\d+)/', views.option_Number,name='option'),
     url(r'^polls/(?P<quickPoll_id>\d+)/vote/', views.vote, name='vote'),
 	url(r'^test', views.TestView.as_view(), name='createpoll'),
+	url("voted/", views.my_voted_polls, name="my_voted_polls"),
 ]

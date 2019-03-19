@@ -45,11 +45,27 @@ def myaccount(request):
 	return render(request,'myaccount.html')
 
 def mypolls(request):
-	return render(request,'mypolls.html')
+	polls = Poll.objects.filter(author=request.user)
+	context = { "polls": polls }
+	return render(request,'mypolls.html', context)
 
 def search(request):
-	polls= Poll.objects.all()
-	context={'polls':polls}
+	empty_query = False
+	search_query = request.GET.get("q")
+	_filter = request.GET.get("filter")
+	if search_query == None or len(search_query.strip()) == 0:
+		empty_query = True
+		polls = []
+	else:
+		polls = Poll.objects.filter(form__icontains=search_query)
+		if not _filter or _filter == "recent":
+			polls = polls.order_by('-created_at')
+		elif _filter == "popular":
+			polls = polls.order_by("-votes")
+	context={
+		'polls':polls,
+		'empty_query': empty_query
+	}
 	return render(request,'search.html',context)
 
 def vote(request, quickPoll_id):
@@ -91,7 +107,10 @@ def option_Number(request, quickPoll_id):
     context={'option':option, 'comments':comments}
     return render(request,'option_Number.html',context)
 
-
+def my_voted_polls(request):
+	polls = Poll.objects.filter(author=request.user, vote__voter__pk=request.user.id)
+	context = { "polls": polls }
+	return render(request,'mypolls.html', context)
 
 class OptionInline(InlineFormSetFactory): #create multiple model instances from a single form, option in this case
     model = Options #for multiple options in a single form
@@ -129,6 +148,8 @@ class TestView(CreateWithInlinesView):
 
 	def get_success_url(self):
 		return reverse('polls:showpoll', kwargs={'poll_id': self.object.id}) #check to see if any kwargs have been passed to it
+
+
 
 # class TestView(CreateView):
 # 	model = Poll

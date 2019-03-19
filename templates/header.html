@@ -11,8 +11,8 @@
 		</form>
 
 		<div style="float:right;">
-			<form action="/polls/search" style="display:inline;">
-				<input type="text" placeholder="Search.." name="search" style="width: 300px;">
+			<form action="{% url 'polls:search' %}" style="display:inline;">
+				<input type="text" placeholder="Search.." style="width: 300px;" name="q" required="required">
 				<button type="submit">&#x1f50d;</button>
 			</form>
 			<form style="display:inline;">
