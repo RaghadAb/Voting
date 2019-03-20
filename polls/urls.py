@@ -1,5 +1,9 @@
 from django.conf.urls import url
-from polls import views
+from django.urls import path, include
+from polls import *
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 app_name="polls"
 
@@ -21,4 +25,12 @@ urlpatterns = [
     url(r'^polls/(?P<quickPoll_id>\d+)/vote/', views.vote, name='vote'),
 	url(r'^test', views.TestView.as_view(), name='createpoll'),
 	url("voted/", views.my_voted_polls, name="my_voted_polls"),
+	url(r'^upload/', views.upload_photo, name='upload_photo'),
+	path('profile_images/', views.UserProfile, name='UserProfile'),
+	path('accounts/', include('django.contrib.auth.urls')),
+
+
 ]
+
+if settings.DEBUG:
+	urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

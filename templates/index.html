@@ -1,5 +1,5 @@
 {% load staticfiles %}
-{% load account %}
+
 
 <head>
 	<link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
@@ -9,14 +9,6 @@
 </head>
 <body>
 
-	{% user_display user %}
-
-	{% if user.is_authenticated %}
-		<li><a href="{% url 'account_logout' %}">Sign Out</a></li>
-	{% else %}
-		<li><a href="{% url 'account_login' %}">Sign In</a></li>
-		<li><a href="{% url 'account_signup' %}">Sign Up</a></li>
-	{% endif %}
 
 	<span style="font-size:80px;">QuickPoll</span><br/>
 	Real time polls and quizzes<br/>

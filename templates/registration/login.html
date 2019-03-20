@@ -1,9 +1,9 @@
 {% load staticfiles %}
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
 </head>
 <body>
-	<form method="post">
+    <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Login</button>

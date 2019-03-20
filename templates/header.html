@@ -19,17 +19,19 @@
 				<input type="text" placeholder="Search.." style="width: 300px;" name="q" required="required">
 				<button type="submit" style="margin-top: 8px;">&#x1f50d;</button>
 			</form>
-			<form action="{% url 'account_logout' %}" style="display:inline;">
-				<button type="submit">Log out</button>
-			</form>
+			{% if user.is_authenticated %}
+  				Hi {{ user.username }}!
+  				<form action="{% url 'logout' %}" style="display:inline;">
+					<button type="submit">Log out</button>
+				</form>
+			{% else %}
+  				You are not logged in!
+  				<form action="{% url 'login' %}" style="display:inline;">
+					<button type="submit">Log in</button>
+				</form>
+			{% endif %}
 		</div>
 </div>
 
 
-{% if messages %}
-	<ul class="messages">
-		{% for message in messages %}
-			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-		{% endfor %}
-	</ul>
-{% endif %}
+

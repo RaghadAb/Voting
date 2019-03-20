@@ -47,9 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     'crispy_forms',
     'widget_tweaks',
     'extra_views',
@@ -142,6 +139,8 @@ STATICFILES_DIRS=[STATIC_DIR, ]
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = "/polls"
+LOGOUT_REDIRECT_URL = "/polls"
+
 
 # CRISPY_TEMPLATE_PACK = 'uni_form'
 MEDIA_ROOT = MEDIA_DIR

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import DateInput, inlineformset_factory
-from .models import Poll, Options
+from .models import *
 from crispy_forms.helper import FormHelper #controls what is displayed by crispy forms
 from django.utils import timezone
 from djangoformsetjs.utils import formset_media_js
@@ -43,3 +43,8 @@ class OptionForm(forms.ModelForm): #this displays the options
 
 OptionFormSet = inlineformset_factory(Poll, Options, OptionForm, extra=1) #create new objects and edit objects specified
 
+class UserProfileForm(forms.ModelForm):
+
+    class Meta:
+        model= UserProfile
+        fields=['user','picture']

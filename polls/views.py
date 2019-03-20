@@ -2,13 +2,15 @@ from django.shortcuts import render, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView
-from .models import Poll, Options, Vote,Category, Comments
-from .forms import PollForm, OptionFormSet
+from .models import *
+from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
 from django.forms.models import BaseInlineFormSet
+from django.core.files.storage import FileSystemStorage
+
 
 #note: formsets keep track of the initial form created, and the changes done to them afterwards.
 #inline formsets are used to handle set of objects belong to common foreign key.
@@ -54,6 +56,7 @@ def mypolls(request):
 	polls = Poll.objects.filter(author=request.user)
 	context = { "polls": polls }
 	return render(request,'mypolls.html', context)
+
 
 def search(request):
 	empty_query = False
@@ -146,6 +149,17 @@ class TestView(CreateWithInlinesView):
 		return reverse('polls:showpoll', kwargs={'poll_id': self.object.id}) #check to see if any kwargs have been passed to it
 
 
+def upload_photo(request):
+	if request.method=='POST':
+		form=UserProfileForm(request.POST,request.user, request.FILES)
+		if form.is_valid():
+			form.save()
+			return redirect('polls:myaccount')
+	else:
+		form=UserProfileForm()
+	return render(request, 'upload.html', {
+		'form':form
+		})
 
 # class TestView(CreateView):
 # 	model = Poll
