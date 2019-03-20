@@ -38,9 +38,15 @@ def createpoll(request):
 	return render(request,'createpoll.html', { 'form': form })#combines the template with the dictionary
 
 def show_poll(request, poll_id):
-	poll = get_object_or_404(Poll, id=poll_id)
-	return render(request,'show_poll.html', { 'poll': poll })
+	option=Poll.objects.get(id=poll_id)
+	comments = Comments.objects.filter(poll=poll_id)
 
+	if request.method=="POST":
+		print("It's submitted!")
+		print(request.POST)
+
+	context={'option':option, 'comments':comments}
+	return render(request,'show_poll.html',context)
 def myaccount(request):
 	return render(request,'myaccount.html')
 
@@ -51,13 +57,13 @@ def mypolls(request):
 
 def search(request):
 	empty_query = False
-	search_query = request.GET.get("q")
+	search_query = request.GET.get("q") #q is any input which is passed in the search field, incase a query is passed it will be picked up, otherwise it is left alone
 	_filter = request.GET.get("filter")
 	if search_query == None or len(search_query.strip()) == 0:
 		empty_query = True
 		polls = []
 	else:
-		polls = Poll.objects.filter(form__icontains=search_query)
+		polls = Poll.objects.filter(form__icontains=search_query) #filtering the word which has been used to search for a poll
 		if not _filter or _filter == "recent":
 			polls = polls.order_by('-created_at')
 		elif _filter == "popular":
@@ -96,16 +102,6 @@ def poll_results(request, poll_id):
 def all_urls(request):
 	return render(request,'all_urls.html')
 
-def option_Number(request, quickPoll_id):
-    option=Poll.objects.get(id=quickPoll_id)
-    comments = Comments.objects.filter(poll=quickPoll_id)
-
-    if request.method=="POST":
-        print("It's submitted!")
-        print(request.POST)
-
-    context={'option':option, 'comments':comments}
-    return render(request,'option_Number.html',context)
 
 def my_voted_polls(request):
 	polls = Poll.objects.filter(author=request.user, vote__voter__pk=request.user.id)

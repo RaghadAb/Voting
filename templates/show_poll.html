@@ -1,29 +1,27 @@
 {% load staticfiles %}
-{% load account %}
-
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="{% static "js/script.js"%}"></script>
-	<div id="header"></div>
+    <link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static "js/script.js"%}"></script>
+    <div id="header"></div>
 </head>
 <body>
-A page to view your poll
+    <form action="{% url 'polls:vote' option.id %}" method="post">
+        {% csrf_token %} <!-- this is for extra security -->
 
-<h2>{{ poll.form }}</h2>
-<h5>By: {% user_display poll.author %}</h5>
+        {% for choice in option.options_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+        <label for="choice{{ forloop.counter }}">{{ choice.option }}</label><br />
+        {% endfor %}
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <input type="submit" name="Vote">
 
-<form action="{% url 'polls:vote' poll.id %}" method="POST">
-	{% csrf_token %}
-	{% for option in poll.options_set.all %}
-		<input type="radio" name="option" id="option{{ forloop.counter }}" value="{{option.id}}" style="width: unset;">
-		<label for="option{{ forloop.counter }}">{{ option.option }}</label><br />
-	{% endfor %}
+        {% for comment in comments %}
+            <div>
+            <img src="https://msluxuryvip.com/wp-content/uploads/2018/06/medium-default-avatar.png" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
+            {{comment.author.username}}:</br>
+            {{comment.text}} </div>
+        {% endfor %}
 
-	<input type="submit" value="Vote" />
-
-</form>
-
+    </form>
 </body>

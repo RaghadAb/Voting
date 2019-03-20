@@ -15,7 +15,7 @@
 
 	<form url="{% url 'polls:search' %}" method="get">
 		<input name="q" value="{{ request.GET.q }}" type="hidden" />
-		<select name="filter">
+		<select name="filter"> <!--GET request is fired here, where request.GET.q is the input search, this allows for previously searched key words to appear -->
 			<option value="recent"
 				{% if request.GET.filter == 'selected' %}{{ 'selected' }}{% endif %}
 			>Most Recent</option>

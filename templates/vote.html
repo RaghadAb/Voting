@@ -7,4 +7,12 @@
 </head>
 <body>
 A page to vote on topics
+
+{% for comment in comments %}
+            <div>
+            <img src="https://msluxuryvip.com/wp-content/uploads/2018/06/medium-default-avatar.png" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
+            {{comment.author.username}}:</br>
+            {{comment.text}} </div>
+
+        {% endfor %}
 </body>

@@ -10,6 +10,10 @@
 			<button type="submit" style="margin-top: 8px;">Create Poll</button>
 		</form>
 
+		<form action="{% url 'polls:myaccount' %}" method="get" style="display:inline;">
+			<button type="submit" style="margin-top: 8px;">My account</button>
+		</form>
+
 		<div style="float:right;">
 			<form action="{% url 'polls:search' %}" style="display:inline;">
 				<input type="text" placeholder="Search.." style="width: 300px;" name="q" required="required">
