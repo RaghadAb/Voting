@@ -1,6 +1,5 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView
 from .models import *
 from .forms import *
@@ -19,12 +18,6 @@ def index(request):
 
 def header(request):
 	return render(request,'header.html')
-
-def login(request):
-	return render(request,'login.html')
-
-def register(request):
-	return render(request,'register.html')
 
 @login_required
 def createpoll(request):
@@ -49,6 +42,7 @@ def show_poll(request, poll_id):
 
 	context={'option':option, 'comments':comments}
 	return render(request,'show_poll.html',context)
+
 def myaccount(request):
 	return render(request,'myaccount.html')
 
@@ -78,29 +72,20 @@ def search(request):
 	return render(request,'search.html',context)
 
 def vote(request, quickPoll_id):
-	poll = get_object_or_404(Poll, id=quickPoll_id)
-	try:
-		print(request.POST["option"])
-		selected_option = poll.options_set.get(pk=request.POST["option"])
-		with transaction.atomic(): #if there is an error, it redirects it automatically
-			selected_option.votes += 1
-			poll.votes += 1
-			vote = Vote()
-			if request.user.is_authenticated:
-				vote.voter = request.user
-			vote.option = selected_option
-			vote.poll = poll
-			vote.save(); selected_option.save(); poll.save();
-
-	except (KeyError, Options.DoesNotExist) as e:#when you try to access a key which doesnt exist
-		print(e)
-		pass
-	return render(request,'vote.html')
+        if request.method=='POST':
+                selected_option = Options.objects.filter(id=request.POST['choice'])[0]
+                selected_option.votes+=1
+                selected_option.save()
+                poll=selected_option.question
+                poll.votes+=1
+                poll.save()
+        context = { 'poll': poll }
+        return render(request,'results.html', context)
 
 def poll_results(request, poll_id):
-	poll = get_object_or_404(Poll, id=poll_id)
-	context = { 'poll': poll }
-	return render(request,'results.html', context)
+        poll = get_object_or_404(Poll,id=poll_id)
+        context={'poll':poll}
+        return render(request,'search.html',context)
 
 def all_urls(request):
 	return render(request,'all_urls.html')
@@ -160,26 +145,17 @@ def upload_photo(request):
 	return render(request, 'upload.html', {
 		'form':form
 		})
-
-# class TestView(CreateView):
-# 	model = Poll
-# 	form_class = PollForm
-
-# 	def get_context_data(self, **kwargs):
-# 		data = super(TestView, self).get_context_data(**kwargs)
-# 		if self.request.POST:
-# 			data["poll_options"] = OptionFormSet(self.request.POST)
-# 		else:
-# 			data["poll_options"] = OptionFormSet()
-# 		return data
-
-# 	def form_valid(self, form):
-# 		context = self.get_context_data()
-# 		poll_options = context["poll_options"]
-# 		with transaction.atomic():
-# 			self.object = form.save()
-
-# 			if poll_options.is_valid():
-# 				poll_options.instance = self.object
-# 				poll_options.save()
-# 		return super(TestView, self).form_valid(form)
+def add_comment(request, quickPoll_id):
+        poll = get_object_or_404(Poll, id=quickPoll_id)
+        if request.method=='POST':
+                form = CommentForm(request.POST)
+                if form.is_valid():
+                        comment = form.save(commit=False)
+                        comment.poll=poll
+                        comment.author=request.user
+                        comment.save()
+                        return redirect('polls:index')
+                else:
+                        form = CommentForm()
+                context={'form':form}
+                return render(request,"add_comment.html", context)

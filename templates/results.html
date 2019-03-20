@@ -42,7 +42,7 @@ var myChart = new Chart(ctx, {
         datasets: [{
             label: '# of Votes',
 			data: [{% for option in poll.options_set.all %}{{ option.votes }},{% endfor %}],
-			backgroundColor: [{% for option in poll.options_set.all %}"{{ option.option_color }}",{% endfor %}],
+			backgroundColor: [{% for option in poll.options_set.all %}"#ff9900",{% endfor %}],
 			borderColor: [{% for option in poll.options_set.all %}"{{ option.option_color|to_border_alpha }}",{% endfor %}],
             borderWidth: 1
         }]

@@ -25,8 +25,6 @@ class Category(models.Model):
 #this is the parent class
 class Poll(models.Model):#define fields and behaviors
     form = models.CharField(max_length=255)
-    pub_date = models.DateField(default=timezone.now)
-    text = models.CharField(max_length=255, null='DEFAULT VALUE')
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)#at this point, this is for registered users
@@ -34,7 +32,7 @@ class Poll(models.Model):#define fields and behaviors
     #text is used as a keyword, which is useful for categorising
 
     def __str__(self):
-        return str(self.text) #convert to string to avoid any errors
+        return str(self.form) #convert to string to avoid any errors
 
     def get_absolute_url(self):
         return reverse('polls:poll_results', kwargs={'poll_id': self.id})
@@ -63,11 +61,11 @@ class Vote(models.Model):
 #points to object, views the object
 
 class Comments(models.Model):
-    pub_date = models.DateField()
-    text = models.CharField(max_length=2048, null='DEFAULT VALUE')
+    pub_date = models.DateField(auto_now_add=True)
+    text = models.CharField(max_length=2048, null=False)
     id = models.IntegerField(primary_key=True)
-    poll = models.ForeignKey(Poll, null=True,on_delete=models.CASCADE)
-    author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    poll = models.ForeignKey(Poll, null=False,on_delete=models.CASCADE)
+    author = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural='comments'

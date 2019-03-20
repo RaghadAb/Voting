@@ -15,13 +15,16 @@
         {% endfor %}
 
         <input type="submit" name="Vote">
-
-        {% for comment in comments %}
-            <div>
-            <img src="https://msluxuryvip.com/wp-content/uploads/2018/06/medium-default-avatar.png" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
-            {{comment.author.username}}:</br>
-            {{comment.text}} </div>
-        {% endfor %}
-
     </form>
+	<form action="{% url  'polls:add_comment' quickPoll_id=option.id %}" method="post">
+        {% csrf_token %} <!-- this is for extra security -->
+        <input type="submit" name="comment" value="Leave a comment!">
+    </form>
+	{% for comment in comments %}
+		<div>
+		<img src="https://msluxuryvip.com/wp-content/uploads/2018/06/medium-default-avatar.png" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
+		{{comment.author.username}}:</br>
+		{{comment.text}} 
+		</div>
+	{% endfor %}
 </body>

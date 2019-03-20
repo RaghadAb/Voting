@@ -17,16 +17,12 @@ class PollForm(forms.ModelForm): #a form is a single poll
 
     class Meta:
         model = Poll
-        fields = ["form", "pub_date"]
+        fields = ["form"]
         widgets = {
-            "pub_date": forms.SelectDateWidget(),
             "form": forms.TextInput
          } #these are the two fields displayed within a single form
         labels = {
             "form": "Poll Name"
-        }
-        initial = {
-            "pub_date": timezone.now()
         }
 
     class Media(object):
@@ -43,8 +39,10 @@ class OptionForm(forms.ModelForm): #this displays the options
 
 OptionFormSet = inlineformset_factory(Poll, Options, OptionForm, extra=1) #create new objects and edit objects specified
 
-class UserProfileForm(forms.ModelForm):
-
+class CommentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)   
+        self.fields['text'].label = "Please enter your comments:"
     class Meta:
-        model= UserProfile
-        fields=['user','picture']
+        model= Comments
+        fields=('text',)
