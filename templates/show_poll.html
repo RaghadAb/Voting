@@ -21,10 +21,11 @@
         <input type="submit" name="comment" value="Leave a comment!">
     </form>
 	{% for comment in comments %}
-		<div>
+		<div class="comment">
 		<img src="https://msluxuryvip.com/wp-content/uploads/2018/06/medium-default-avatar.png" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
-		{{comment.author.username}}:</br>
+		At {{comment.pub_date}} {{comment.author.username}} wrote:</br>
 		{{comment.text}} 
 		</div>
+		<br/>
 	{% endfor %}
 </body>

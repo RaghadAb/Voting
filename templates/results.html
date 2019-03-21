@@ -1,8 +1,6 @@
 {% load staticfiles %}
 {% load static %}
 {% load to_border_alpha %}
-
-
 <head>
 	<link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -11,52 +9,50 @@
 	<div id="header"></div>
 </head>
 <body>
-a page to view the vote results
-
-<div>
-<h2>Poll Results: {{ poll.form }}</h2>
-<h5> </h5>
-
-<h5>Votes: {{ poll.votes }}</h5>
-
-<h4>Options</h4>
-
-<uL>
-	{% for option in poll.options_set.all %}
-		<li>{{ option.option }}: {{ option.votes }} votes</li>
+	<h2>Poll Results: {{ poll.form }}</h2>
+	<h5>Votes: {{ poll.votes }}</h5>
+	<h4>Options</h4>
+	<uL>
+		{% for option in poll.options_set.all %}
+			<li>{{ option.option }}: {{ option.votes }} votes</li>
+		{% endfor %}
+	</ul>
+	<div style="max-width: 500px;">
+		<canvas id="myChart" width="400" height="400"></canvas>
+	</div>
+	
+	{% for comment in comments %}
+		<div class="comment">
+		<img src="https://msluxuryvip.com/wp-content/uploads/2018/06/medium-default-avatar.png" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
+		At {{comment.pub_date}} {{comment.author.username}} wrote:</br>
+		{{comment.text}} 
+		</div>
+		<br/>
 	{% endfor %}
-</ul>
-
-<div style="max-width: 500px;">
-	<canvas id="myChart" width="400" height="400"></canvas>
-</div>
-
-</div>
-
-<script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: [{% for option in poll.options_set.all %}"{{ option.option }}",{% endfor %}],
-        datasets: [{
-            label: '# of Votes',
-			data: [{% for option in poll.options_set.all %}{{ option.votes }},{% endfor %}],
-			backgroundColor: [{% for option in poll.options_set.all %}"#ff9900",{% endfor %}],
-			borderColor: [{% for option in poll.options_set.all %}"{{ option.option_color|to_border_alpha }}",{% endfor %}],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-</script>
-
+	
+	<script>
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: [{% for option in poll.options_set.all %}"{{ option.option }}",{% endfor %}],
+				datasets: [{
+					label: '# of Votes',
+					data: [{% for option in poll.options_set.all %}{{ option.votes }},{% endfor %}],
+					backgroundColor: [{% for option in poll.options_set.all %}"#ff9900",{% endfor %}],
+					borderColor: [{% for option in poll.options_set.all %}"{{ option.option_color|to_border_alpha }}",{% endfor %}],
+					borderWidth: 1
+				}]
+			},
+			options: {
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
+				}
+			}
+		});
+	</script>
 </body>

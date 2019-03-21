@@ -1,17 +1,19 @@
- {% load staticfiles %}
+{% load staticfiles %}
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static "js/script.js"%}"></script>
+    <div id="header"></div>
 </head>
 <body>
-	<form  class="login">
-	  <fieldset>
-		<legend style="font-weight:900px;">Sign up</legend>
-		<input name="name" type="text" placeholder="Username" /> <br />
-		<input name="name" type="password" placeholder="Password" />
-		<br /> <input name="name" type="text" placeholder="Email" /> <br />
-		<label class="ArchMed" for="dob" style="float:left;">Date of birth:</label><br />
-		<input type="date" id="dob" name="date-of-birth"/><br />
-		<button type="submit" value="Submit">Register</button>
-	  </fieldset>
-	</form>
+	{% if registered %}
+		<span>Thank you for registering!</span>
+	{% else %}
+		<form id="user_form" method="post" action="{% url  'polls:register' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ user_form.as_p }}
+			{{ profile_form.as_p }}
+			<input type="submit" name="submit" value="Register!">
+		</form>
+	{% endif %}
 </body>

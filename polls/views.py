@@ -72,6 +72,7 @@ def search(request):
 	return render(request,'search.html',context)
 
 def vote(request, quickPoll_id):
+        comments = Comments.objects.filter(poll=quickPoll_id)
         if request.method=='POST':
                 selected_option = Options.objects.filter(id=request.POST['choice'])[0]
                 selected_option.votes+=1
@@ -79,7 +80,7 @@ def vote(request, quickPoll_id):
                 poll=selected_option.question
                 poll.votes+=1
                 poll.save()
-        context = { 'poll': poll }
+        context = { 'poll': poll, 'comments':comments}
         return render(request,'results.html', context)
 
 def poll_results(request, poll_id):
@@ -133,18 +134,6 @@ class TestView(CreateWithInlinesView):
 	def get_success_url(self):
 		return reverse('polls:showpoll', kwargs={'poll_id': self.object.id}) #check to see if any kwargs have been passed to it
 
-
-def upload_photo(request):
-	if request.method=='POST':
-		form=UserProfileForm(request.POST,request.user, request.FILES)
-		if form.is_valid():
-			form.save()
-			return redirect('polls:myaccount')
-	else:
-		form=UserProfileForm()
-	return render(request, 'upload.html', {
-		'form':form
-		})
 def add_comment(request, quickPoll_id):
         poll = get_object_or_404(Poll, id=quickPoll_id)
         if request.method=='POST':
@@ -159,3 +148,29 @@ def add_comment(request, quickPoll_id):
                         form = CommentForm()
                 context={'form':form}
                 return render(request,"add_comment.html", context)
+
+def register(request):
+        registered = False
+        if request.method == 'POST':
+                user_form = UserForm(data=request.POST)
+                profile_form = UserProfileForm(data=request.POST)
+                if user_form.is_valid() and profile_form.is_valid():
+                        user = user_form.save()
+                        user.set_password(user.password)
+                        user.save()
+                        profile = profile_form.save(commit=False)
+                        profile.user=user
+                        if 'picture' in request.FILES:
+                                profile.picture = request.FILES['picture']
+                        profile.save()
+                        registered = True
+                else:
+                        print(user_form.errors, profile_form.errors)
+        else:
+                user_form=UserForm()
+                profile_form=UserProfileForm()
+        return render(request,
+                      'register.html',
+                      {'user_form': user_form,
+                       'profile_form': profile_form,
+                       'registered':registered})

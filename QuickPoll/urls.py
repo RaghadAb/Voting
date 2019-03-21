@@ -18,15 +18,13 @@ from django.contrib import admin
 from django.conf.urls import include
 from polls import views
 from django.views.i18n import JavaScriptCatalog
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
-	url(r'^$', views.index, name='index'),
-	url(r'^polls/', include('polls.urls')),
+    url(r'^$', views.index, name='index'),
+    url(r'^polls/', include('polls.urls')),
     url(r'^admin/', admin.site.urls),
-	url(r'^quickPoll/', include('polls.urls', namespace='quickPoll')),
-    # url(r'^account/', include('polls.urls', namespace='accounts')),
-    #url(r'^comments/', include('django_comments_xtd.urls')),
+    url(r'^quickPoll/', include('polls.urls', namespace='quickPoll')),
     path(r'jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'), #this is used for translation, used to view the results
     path('accounts/', include('django.contrib.auth.urls')),
 

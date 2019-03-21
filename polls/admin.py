@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Poll, Options, Category, Comments, UserProfile
+from .models import *
 # Register your models here.
 # the . simply means that the import is from the same directory
 
