@@ -26,7 +26,11 @@
     </form>
 	{% for comment in comments %}
 		<div class="comment">
-		<img src="{% static "images/avatar.png"%}" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
+		{% if comment.author.userprofile.picture.url %}
+			<img src="{{comment.author.userprofile.picture.url}}" alt="Place Holder" style="display:inline;float:left;margin-right:10px;border-radius:25px;" height="50" width="50">
+		{% else %}
+			<img src="{% static "images/avatar.png"%}" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
+		{% endif %}
 		At {{comment.pub_date}} {{comment.author.username}} wrote:</br>
 		{{comment.text}} 
 		</div>
