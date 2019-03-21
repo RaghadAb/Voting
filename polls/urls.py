@@ -16,7 +16,6 @@ urlpatterns = [
 	url(r'^myaccount', views.myaccount, name='myaccount'),
 	url(r'^mypolls', views.mypolls, name='mypolls'),
 	url(r'^search', views.search, name='search'),
-	url(r'^all_urls', views.all_urls, name='all_urls'),
 	url(r'^option/(?P<quickPoll_id>\d+)/', views.show_poll,name='showpoll'),
         url(r'^polls/(?P<quickPoll_id>\d+)/vote/', views.vote, name='vote'),
 	url(r'^test', views.TestView.as_view(), name='createpoll'),

@@ -10,90 +10,89 @@
 	<script src="{% static "js/script.js"%}"></script>
 	<div id="header"></div>
 </head>
+<body>
+	<form method="post">
+		{{ form }}
 
-<form method="post">
-    {{ form }}
+		{% csrf_token %}
 
-    {% csrf_token %}
+		<br/>
 
-    <br/>
+		{% with options_form=inlines.0 %}
+			{{ options_form.management_form }}
+			<div id="formset" data-formset-prefix="{{ options_form.prefix }}">
+				<div data-formset-body>
+					{% for inline_form in options_form %}
+						<div data-formset-form>
+							{{ inline_form }}
+							<button type="button" data-formset-delete-button>Delete form</button>
+						</div>
+					{% endfor %}
+				</div>
 
-    {% with options_form=inlines.0 %}
-        {{ options_form.management_form }}
-        <div id="formset" data-formset-prefix="{{ options_form.prefix }}">
-            <div data-formset-body>
-                {% for inline_form in options_form %}
-                    <div data-formset-form>
-                        {{ inline_form }}
-                        <button type="button" data-formset-move-up-button>Move up</button>
-                        <button type="button" data-formset-move-down-button>Move down</button>
-                        <button type="button" data-formset-delete-button>Delete form</button>
-                    </div>
-                {% endfor %}
-            </div>
+				<script type="form-template" data-formset-empty-form>
+					{% escapescript %}
+						<div data-formset-form>
+							{{ options_form.empty_form }}
+							<button type="button" data-formset-delete-button>Delete form</button>
+						</div>
+					{% endescapescript %}
+				</script>
 
-            <script type="form-template" data-formset-empty-form>
-                {% escapescript %}
-                    <div data-formset-form>
-                        {{ options_form.empty_form }}
-                        <button type="button" data-formset-move-up-button>Move up</button>
-                        <button type="button" data-formset-move-down-button>Move down</button>
-                        <button type="button" data-formset-delete-button>Delete form</button>
-                    </div>
-                {% endescapescript %}
-            </script>
+				<input type="button" value="Add another" data-formset-add>
 
-            <input type="button" value="Add another" data-formset-add>
+					<script>jQuery(function($) {
+							$("#formset").formset({
+								animateForms: true,
+								reorderMode: 'dom',
+							});
+						});
+					</script>
 
-                <script>jQuery(function($) {
-                        $("#formset").formset({
-                            animateForms: true,
-                            reorderMode: 'dom',
-                        });
-                    });
-                </script>
+			</div>
+		{% endwith %}
 
-        </div>
-    {% endwith %}
+		<input type="submit" value="Create Poll" />
+	</form>
 
-    <input type="submit" value="Create Poll" />
-</form>
+	{% comment %} 
+	<form action="" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
 
-{% comment %} 
-<form action="" method="post">
-	{% csrf_token %}
-    {{ form.as_p }}
+		<table class="table">
+			{{ poll_options.management_form }}
 
-    <table class="table">
-        {{ poll_options.management_form }}
+			{% for form in poll_options.forms %}
+				{% if forloop.first %}
+					<thead>
+					<tr>
+						{% for field in form.visible_fields %}
+							<th>{{ field.label|capfirst }}</th>
+						{% endfor %}
+					</tr>
+					</thead>
+				{% endif %}
+				<tr class="{% cycle 'row1' 'row2' %} formset_row">
+					{% for field in form.visible_fields %}
+						<td>
+							{# Include the hidden fields in the form #}
+							{% if forloop.first %}
+								{% for hidden in form.hidden_fields %}
+									{{ hidden }}
+								{% endfor %}
+							{% endif %}
+							{{ field.errors.as_ul }}
+							{{ field }}
+						</td>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+		</table>
 
-        {% for form in poll_options.forms %}
-            {% if forloop.first %}
-                <thead>
-                <tr>
-                    {% for field in form.visible_fields %}
-                        <th>{{ field.label|capfirst }}</th>
-                    {% endfor %}
-                </tr>
-                </thead>
-            {% endif %}
-            <tr class="{% cycle 'row1' 'row2' %} formset_row">
-                {% for field in form.visible_fields %}
-                    <td>
-                        {# Include the hidden fields in the form #}
-                        {% if forloop.first %}
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                        {% endif %}
-                        {{ field.errors.as_ul }}
-                        {{ field }}
-                    </td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
+		<br/>
+		<br/>
+		<input type="submit" value="Create Poll">
 
-    <input type="submit" value="Create Poll" />
-
-</form> {% endcomment %}
+	</form> {% endcomment %}
+<body>

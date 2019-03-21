@@ -6,11 +6,12 @@
 	<div id="header"></div>
 </head>
 <body>
-A page to view your account
-
-<h3><a href="{% url 'polls:mypolls' %}">My Polls</a></h3>
-<h3><a href="{% url 'polls:my_voted_polls' %}">My Voted Polls</a></h3>
-
+    <form action="{% url 'polls:mypolls' %}">
+		<input type="submit" name="submit" value="My polls">
+	</form>
+	<form action="{% url 'polls:my_voted_polls' %}">
+		<input type="submit" name="submit" value="My voted polls">
+	</form>
 </body>
 
 <!-- you need a button to access myaccount -->

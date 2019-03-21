@@ -88,10 +88,6 @@ def poll_results(request, poll_id):
         context={'poll':poll}
         return render(request,'search.html',context)
 
-def all_urls(request):
-	return render(request,'all_urls.html')
-
-
 def my_voted_polls(request):
 	polls = Poll.objects.filter(author=request.user, vote__voter__pk=request.user.id)
 	context = { "polls": polls }

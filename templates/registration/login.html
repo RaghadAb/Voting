@@ -6,9 +6,10 @@
     <div id="header"></div>
 </head>
 <body>
-    <form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" name="submit" value="Login!">
-</form>
+    <form method="post" class="middle">
+		<legend style="font-weight:900px;">Sign in</legend>
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" name="submit" value="Login!">
+	</form>
 </body>

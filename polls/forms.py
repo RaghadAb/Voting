@@ -11,10 +11,6 @@ class PollForm(forms.ModelForm): #a form is a single poll
         self.user = kwargs.pop('user', None) #automatic form layout
         self.helper = FormHelper()
 
-    # def clean(self):
-    #     print(self)
-    #     return self
-
     class Meta:
         model = Poll
         fields = ["form"]
