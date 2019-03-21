@@ -6,7 +6,7 @@
     <div id="header"></div>
 </head>
 <body>
-    <form action="{% url 'polls:vote' option.id %}" method="post">
+    <form action="{% url 'polls:vote' option.id %}" method="post" style="display:inline;">
         {% csrf_token %} <!-- this is for extra security -->
 
         {% for choice in option.options_set.all %}
@@ -14,7 +14,11 @@
         <label for="choice{{ forloop.counter }}">{{ choice.option }}</label><br />
         {% endfor %}
 
-        <input type="submit" name="Vote">
+        <input type="submit" name="Vote" value="Vote">
+    </form>
+	<form action="{% url  'polls:show_results' quickPoll_id=option.id %}" method="post" style="display:inline;">
+        {% csrf_token %} <!-- this is for extra security -->
+        <input type="submit" name="comment" value="View results">
     </form>
 	<form action="{% url  'polls:add_comment' quickPoll_id=option.id %}" method="post">
         {% csrf_token %} <!-- this is for extra security -->
@@ -22,7 +26,7 @@
     </form>
 	{% for comment in comments %}
 		<div class="comment">
-		<img src="https://msluxuryvip.com/wp-content/uploads/2018/06/medium-default-avatar.png" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
+		<img src="{% static "images/avatar.png"%}" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
 		At {{comment.pub_date}} {{comment.author.username}} wrote:</br>
 		{{comment.text}} 
 		</div>

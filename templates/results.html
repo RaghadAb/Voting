@@ -23,7 +23,7 @@
 	
 	{% for comment in comments %}
 		<div class="comment">
-		<img src="https://msluxuryvip.com/wp-content/uploads/2018/06/medium-default-avatar.png" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
+		<img src="{% static "images/avatar.png"%}" alt="Place Holder" style="display:inline;float:left;margin-right:10px;" height="50" width="50">
 		At {{comment.pub_date}} {{comment.author.username}} wrote:</br>
 		{{comment.text}} 
 		</div>

@@ -35,16 +35,16 @@ def createpoll(request):
 def show_poll(request, poll_id):
 	option=Poll.objects.get(id=poll_id)
 	comments = Comments.objects.filter(poll=poll_id)
-
-	if request.method=="POST":
-		print("It's submitted!")
-		print(request.POST)
-
 	context={'option':option, 'comments':comments}
 	return render(request,'show_poll.html',context)
 
 def myaccount(request):
-	return render(request,'myaccount.html')
+        try:
+                src = request.user.userprofile.picture.url
+        except:
+                src=""
+        context = {'src':src}
+        return render(request,'myaccount.html',context)
 
 def mypolls(request):
 	polls = Poll.objects.filter(author=request.user)
@@ -74,7 +74,7 @@ def search(request):
 def vote(request, quickPoll_id):
         comments = Comments.objects.filter(poll=quickPoll_id)
         if request.method=='POST':
-                selected_option = Options.objects.filter(id=request.POST['choice'])[0]
+                selected_option = Options.objects.get(id=request.POST['choice'])
                 selected_option.votes+=1
                 selected_option.save()
                 poll=selected_option.question
@@ -88,10 +88,13 @@ def poll_results(request, poll_id):
         context={'poll':poll}
         return render(request,'search.html',context)
 
-def my_voted_polls(request):
-	polls = Poll.objects.filter(author=request.user, vote__voter__pk=request.user.id)
-	context = { "polls": polls }
-	return render(request,'mypolls.html', context)
+def show_results(request, quickPoll_id):
+        comments = Comments.objects.filter(poll=quickPoll_id)
+        poll = Poll.objects.get(id=quickPoll_id)
+        print(poll)
+        print(quickPoll_id)
+        context = { 'poll': poll, 'comments':comments}
+        return render(request,'results.html', context)
 
 class OptionInline(InlineFormSetFactory): #create multiple model instances from a single form, option in this case
     model = Options #for multiple options in a single form

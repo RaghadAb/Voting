@@ -19,6 +19,8 @@ from django.conf.urls import include
 from polls import views
 from django.views.i18n import JavaScriptCatalog
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -28,4 +30,4 @@ urlpatterns = [
     path(r'jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'), #this is used for translation, used to view the results
     path('accounts/', include('django.contrib.auth.urls')),
 
-]
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

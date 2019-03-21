@@ -6,11 +6,9 @@
 	<div id="header"></div>
 </head>
 <body>
+	<img width="100" height="100" src="{{ src }}" alt="No profile picture found!"/>
     <form action="{% url 'polls:mypolls' %}">
 		<input type="submit" name="submit" value="My polls">
-	</form>
-	<form action="{% url 'polls:my_voted_polls' %}">
-		<input type="submit" name="submit" value="My voted polls">
 	</form>
 </body>
 

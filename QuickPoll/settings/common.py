@@ -76,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media'
             ],
         },
     },
@@ -128,9 +129,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS=[STATIC_DIR, ]
 
@@ -140,7 +138,6 @@ LOGIN_REDIRECT_URL = "/polls"
 LOGOUT_REDIRECT_URL = "/polls"
 
 
-# CRISPY_TEMPLATE_PACK = 'uni_form'
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL='/media/'
 
