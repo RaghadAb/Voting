@@ -6,6 +6,11 @@
     <div id="header"></div>
 </head>
 <body>
+	<div style="text-align: center; background-color:#404040;">
+	You can share this poll using the link below:<br/>
+	<a href="{% url 'polls:showpoll' poll_id=poll.id %}">{% url 'polls:showpoll' poll_id=poll.id %}</a>
+	</div>
+	<h1> {{poll.form}} </h1>
     <form action="{% url 'polls:vote' option.id %}" method="post" style="display:inline;">
         {% csrf_token %} <!-- this is for extra security -->
 
@@ -13,17 +18,19 @@
         <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
         <label for="choice{{ forloop.counter }}">{{ choice.option }}</label><br />
         {% endfor %}
-
+		<h3>This poll was created at: {{ poll.created_at }}</h3>
         <input type="submit" name="Vote" value="Vote">
     </form>
 	<form action="{% url  'polls:show_results' quickPoll_id=option.id %}" method="post" style="display:inline;">
         {% csrf_token %} <!-- this is for extra security -->
         <input type="submit" name="comment" value="View results">
     </form>
-	<form action="{% url  'polls:add_comment' quickPoll_id=option.id %}" method="post">
-        {% csrf_token %} <!-- this is for extra security -->
-        <input type="submit" name="comment" value="Leave a comment!">
-    </form>
+	{% if user.is_authenticated %}
+		<form action="{% url  'polls:add_comment' quickPoll_id=option.id %}" method="post">
+			{% csrf_token %} <!-- this is for extra security -->
+			<input type="submit" name="comment" value="Leave a comment!">
+		</form>
+	{% endif %}
 	{% for comment in comments %}
 		<div class="comment">
 		{% if comment.author.userprofile.picture.url %}

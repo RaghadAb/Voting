@@ -33,10 +33,11 @@ def createpoll(request):
 	return render(request,'createpoll.html', { 'form': form })#combines the template with the dictionary
 
 def show_poll(request, poll_id):
-	option=Poll.objects.get(id=poll_id)
-	comments = Comments.objects.filter(poll=poll_id)
-	context={'option':option, 'comments':comments}
-	return render(request,'show_poll.html',context)
+        poll = Poll.objects.get(id=poll_id)
+        option=Poll.objects.get(id=poll_id)
+        comments = Comments.objects.filter(poll=poll_id)
+        context={'option':option, 'comments':comments, 'poll':poll}
+        return render(request,'show_poll.html',context)
 
 def myaccount(request):
         try:

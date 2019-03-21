@@ -5,11 +5,10 @@
 		<form action="/polls" method="get" style="display:inline;">
 			<button type="submit" style="margin-top:8px;">Home</button>
 		</form>
-
-		<form action="{% url 'polls:createpoll' %}" method="get" style="display:inline;">
-			<button type="submit" style="margin-top: 8px;">Create Poll</button>
-		</form>
 		{% if user.is_authenticated %}
+			<form action="{% url 'polls:createpoll' %}" method="get" style="display:inline;">
+				<button type="submit" style="margin-top: 8px;">Create Poll</button>
+			</form>
 			<form action="{% url 'polls:myaccount' %}" method="get" style="display:inline;">
 				<button type="submit" style="margin-top: 8px;">My account</button>
 			</form>
